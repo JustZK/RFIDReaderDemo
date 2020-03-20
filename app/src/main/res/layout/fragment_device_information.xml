@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".fragment.DeviceInformationFragment">
+
+    <data>
+
+        <variable
+            name="onClickListener"
+            type="android.view.View.OnClickListener" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/sub_big_spacing"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/device_info_id_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/sub_small_spacing"
+                android:text="ID"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/device_info_remote_address_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/sub_small_spacing"
+                android:text="RemoteAddress"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/device_info_version_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/sub_small_spacing"
+                android:text="版本号"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/device_info_hardware_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/sub_small_spacing"
+                android:text="硬件版本号"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/device_info_software_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/sub_small_spacing"
+                android:text="软件版本号"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/device_info_firmware_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/sub_small_spacing"
+                android:text="固件版本号"
+                android:visibility="gone" />
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/device_info_device_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="无可用设备列表"
+            android:textSize="@dimen/big_text" />
+
+        <ListView
+            android:id="@+id/device_info_lv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/sub_big_spacing"
+            android:layout_weight="2" />
+
+    </LinearLayout>
+</layout>

@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">RFID Reader</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+
+    <!--常用按钮名称和提示 - start -->
+    <string name="no_keycode_back">禁止使用回退键！</string>
+    <string name="no_keycode_home">禁止使用HOME键！</string>
+    <string name="no_keycode_menu">禁止使用MENU键！</string>
+    <string name="delete">删除</string>
+    <string name="modify">修改</string>
+    <string name="opinion">查看</string>
+    <string name="go_back">返回</string>
+    <string name="air"></string>
+    <string name="null_prompt">您暂未设置该信息，请点击完成设置。</string>
+    <string name="set">设置</string>
+    <string name="cancel">取消</string>
+    <string name="sure">确定</string>
+    <string name="quit">退出</string>
+    <string name="query">查询</string>
+    <string name="open">打开</string>
+    <string name="click_ok_to_exit">点击确定退出</string>
+    <string name="fill_complete">请填写完整！</string>
+    <string name="misconfiguration">填写的配置有误</string>
+    <string name="update_completed">更新成功。</string>
+    <!--常用按钮名称和提示 - end -->
+
+    <string name="connection_type_title">连接模式：</string>
+    <string name="connection_type">连接模式</string>
+    <string name="connection_type_1">TCP/IP Server（以太网）</string>
+    <string name="connection_type_2">Serial（串口）</string>
+
+    <string name="server_port_title">服务端口：</string>
+    <string name="server_port_hint">Server port</string>
+
+    <string name="serial_path_title">Serial地址：</string>
+    <string name="serial_path">Serial地址</string>
+    <string name="serial_path_hint">Serial path</string>
+
+    <string name="serial_baud_rate_title">Serial波特率：</string>
+    <string name="serial_baud_rate">Serial baud rate</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="device_info_tab_txt">设备信息</string>
+    <string name="label_inventory_tab_txt">标签盘点</string>
+    <string name="label_operation_tab_txt">标签操作</string>
+    <string name="label_settings_tab_txt">标签设置</string>
+
+</resources>
