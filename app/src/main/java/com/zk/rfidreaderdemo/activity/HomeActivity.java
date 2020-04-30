@@ -80,12 +80,14 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    public String getDeviceID() {
-        return mDeviceID;
-    }
+//    public String getDeviceID() {
+//        return mDeviceID;
+//    }
 
     public void setDeviceID(String deviceID) {
         mDeviceID = deviceID;
+        ((LabelInventoryFragment) mFragmentAdapter.getItem(1)).setDeviceID(deviceID);
+        ((LabelSettingsFragment) mFragmentAdapter.getItem(2)).setDeviceID(deviceID);
     }
 
     @Override

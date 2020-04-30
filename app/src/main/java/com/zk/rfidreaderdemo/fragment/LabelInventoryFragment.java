@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,8 @@ public class LabelInventoryFragment extends Fragment implements View.OnClickList
     private final int END = 0x02;
     private final int CANCEL = 0x03;
     private final int VALUE = 0x04;
+
+    private String mDeviceID = null;
 
     private View mView;
     private FragmentLabelInventoryBinding mBinding;
@@ -161,18 +164,21 @@ public class LabelInventoryFragment extends Fragment implements View.OnClickList
 
     @Override
     public void onClick(View v) {
+        if (TextUtils.isEmpty(mDeviceID)) {
+            Toast.makeText(getContext(), "您未选择读写器，请在设备信息界面选择需要操作的读写器。", Toast.LENGTH_SHORT).show();
+            return;
+        }
         switch (v.getId()) {
             case R.id.label_inventory_start_btn:
                 mLabelInfoList.clear();
                 mBinding.labelInventoryNumberTv.setText("当前盘到的标签数量：" + mLabelInfoList.size());
-                String ID = ((HomeActivity) getActivity()).getDeviceID();
                 int fastId = mBinding.labelInventoryFastIdSp.getSelectedItemPosition();
                 int antennaNumber = mBinding.labelInventoryAntennaNumberSp.getSelectedItemPosition();
                 int inventoryType = mBinding.labelInventoryInventoryModeSp.getSelectedItemPosition();
-                UR880Entrance.getInstance().send(new UR880SendInfo.Builder().inventory(ID, fastId, antennaNumber, inventoryType).build());
+                UR880Entrance.getInstance().send(new UR880SendInfo.Builder().inventory(mDeviceID, fastId, antennaNumber, inventoryType).build());
                 break;
             case R.id.label_inventory_stop_btn:
-                UR880Entrance.getInstance().send(new UR880SendInfo.Builder().cancel(((HomeActivity) getActivity()).getDeviceID()).build());
+                UR880Entrance.getInstance().send(new UR880SendInfo.Builder().cancel(mDeviceID).build());
                 break;
             case R.id.label_inventory_clear_btn:
                 mLabelInfoList.clear();
@@ -198,16 +204,22 @@ public class LabelInventoryFragment extends Fragment implements View.OnClickList
         }
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        if (isVisibleToUser) {
-            LogUtil.Companion.getInstance().d("isVisibleToUser");
-            if (mBinding != null && getActivity() != null && ((HomeActivity) getActivity()).getDeviceID() != null) {
-                mBinding.labelDeviceIdTv.setText("设备编号：" + ((HomeActivity) getActivity()).getDeviceID());
-            }
-        } else {
-            LogUtil.Companion.getInstance().d("!!!isVisibleToUser");
+//    @Override
+//    public void setUserVisibleHint(boolean isVisibleToUser) {
+//        if (isVisibleToUser) {
+//            LogUtil.Companion.getInstance().d("isVisibleToUser");
+//            if (mBinding != null && getActivity() != null && ((HomeActivity) getActivity()).getDeviceID() != null) {
+//                mBinding.labelDeviceIdTv.setText("设备编号：" + ((HomeActivity) getActivity()).getDeviceID());
+//            }
+//        } else {
+//            LogUtil.Companion.getInstance().d("!!!isVisibleToUser");
+//        }
+//        super.setUserVisibleHint(isVisibleToUser);
+//    }
+
+    public void setDeviceID(String deviceID){
+        if (mBinding != null) {
+            mBinding.labelDeviceIdTv.setText("设备编号：" + deviceID);
         }
-        super.setUserVisibleHint(isVisibleToUser);
     }
 }

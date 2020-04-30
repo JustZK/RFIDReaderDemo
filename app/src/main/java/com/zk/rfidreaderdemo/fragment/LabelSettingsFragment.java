@@ -34,6 +34,8 @@ public class LabelSettingsFragment extends Fragment implements View.OnClickListe
     private final static int TIME_SYNCHRONIZATION = 0x08;
     private final static int DEVICE_RESTART = 0x09;
 
+    private String mDeviceID = null;
+
     private View mView;
     private FragmentLabelSettingsBinding mBinding;
 
@@ -128,6 +130,10 @@ public class LabelSettingsFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        if (TextUtils.isEmpty(mDeviceID)) {
+            Toast.makeText(getContext(), "您未选择读写器，请在设备信息界面选择需要操作的读写器。", Toast.LENGTH_SHORT).show();
+            return;
+        }
         switch (v.getId()) {
             case R.id.label_settings_set_antenna_btn:
                 int antennaEnableZero = mBinding.labelSettingsAntennaEnableZeroSw.isChecked() ? 1 : 0;
@@ -235,7 +241,7 @@ public class LabelSettingsFragment extends Fragment implements View.OnClickListe
 
                 UR880Entrance.getInstance().send(
                         new UR880SendInfo.Builder().setAntennaConfiguration(
-                                ((HomeActivity) getActivity()).getDeviceID(),
+                                mDeviceID,
                                 antennaEnableZero, antennaEnableOne, antennaEnableTwo, antennaEnableThree,
                                 antennaPowerZero, antennaPowerOne, antennaPowerTwo, antennaPowerThree,
                                 dwellTimeZero, dwellTimeOne, dwellTimeTwo, dwellTimeThree,
@@ -244,33 +250,28 @@ public class LabelSettingsFragment extends Fragment implements View.OnClickListe
             case R.id.label_settings_get_antenna_btn:
                 UR880Entrance.getInstance().send(
                         new UR880SendInfo.Builder().
-                                getAntennaConfiguration(((HomeActivity) getActivity()).
-                                        getDeviceID()).build());
+                                getAntennaConfiguration(mDeviceID).build());
                 break;
             case R.id.label_settings_get_gpi_btn:
                 UR880Entrance.getInstance().send(
                         new UR880SendInfo.Builder().
-                                getGPIOutputStatus(((HomeActivity) getActivity()).
-                                        getDeviceID()).build());
+                                getGPIOutputStatus(mDeviceID).build());
                 break;
             case R.id.label_settings_set_gpo_btn:
                 UR880Entrance.getInstance().send(
                         new UR880SendInfo.Builder().
-                                setGPOOutputStatus(((HomeActivity) getActivity()).
-                                        getDeviceID(), mBinding.labelSettingsGpoPinSp.getSelectedItemPosition(),
+                                setGPOOutputStatus(mDeviceID, mBinding.labelSettingsGpoPinSp.getSelectedItemPosition(),
                                         mBinding.labelSettingsGpoLevelSp.getSelectedItemPosition()).build());
                 break;
             case R.id.label_settings_time_synchronization_btn:
                 UR880Entrance.getInstance().send(
                         new UR880SendInfo.Builder().
-                                timeSynchronization(((HomeActivity) getActivity()).
-                                        getDeviceID()).build());
+                                timeSynchronization(mDeviceID).build());
                 break;
             case R.id.label_settings_device_restart_btn:
                 UR880Entrance.getInstance().send(
                         new UR880SendInfo.Builder().
-                                deviceRestart(((HomeActivity) getActivity()).
-                                        getDeviceID()).build());
+                                deviceRestart(mDeviceID).build());
                 break;
         }
     }
@@ -291,18 +292,18 @@ public class LabelSettingsFragment extends Fragment implements View.OnClickListe
         }
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        if (isVisibleToUser) {
-            LogUtil.Companion.getInstance().d("isVisibleToUser");
-            if (mBinding != null && getActivity() != null && ((HomeActivity) getActivity()).getDeviceID() != null) {
-                mBinding.labelSettingIdTv.setText("设备编号：" + ((HomeActivity) getActivity()).getDeviceID());
-            }
-        } else {
-            LogUtil.Companion.getInstance().d("!!!isVisibleToUser");
-        }
-        super.setUserVisibleHint(isVisibleToUser);
-    }
+//    @Override
+//    public void setUserVisibleHint(boolean isVisibleToUser) {
+//        if (isVisibleToUser) {
+//            LogUtil.Companion.getInstance().d("isVisibleToUser");
+//            if (mBinding != null && getActivity() != null && ((HomeActivity) getActivity()).getDeviceID() != null) {
+//                mBinding.labelSettingIdTv.setText("设备编号：" + ((HomeActivity) getActivity()).getDeviceID());
+//            }
+//        } else {
+//            LogUtil.Companion.getInstance().d("!!!isVisibleToUser");
+//        }
+//        super.setUserVisibleHint(isVisibleToUser);
+//    }
 
     private FactorySettingListener mFactorySettingListener = new FactorySettingListener() {
         @Override
@@ -409,4 +410,9 @@ public class LabelSettingsFragment extends Fragment implements View.OnClickListe
         }
     };
 
+    public void setDeviceID(String deviceID){
+        if (mBinding != null) {
+            mBinding.labelSettingIdTv.setText("设备编号：" + deviceID);
+        }
+    }
 }
