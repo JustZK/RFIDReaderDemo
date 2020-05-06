@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import com.zk.common.utils.AppVersionUtil;
 import com.zk.common.utils.LogUtil;
 import com.zk.rfid.bean.DeviceInformation;
 import com.zk.rfid.ur880.UR880Entrance;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         mActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mActivityMainBinding.setOnClickListener(this);
+        mActivityMainBinding.mainTitleTv.setText("RFID Reader Demo V" + AppVersionUtil.INSTANCE.appVersionNameForShow(this));
 
         LogUtil.Companion.getInstance().setLogSwitch(true);
         LogUtil.Companion.getInstance().init(this);

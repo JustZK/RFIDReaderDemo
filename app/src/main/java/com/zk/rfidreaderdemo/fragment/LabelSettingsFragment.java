@@ -107,6 +107,9 @@ public class LabelSettingsFragment extends Fragment implements View.OnClickListe
             mHandler = new LabelSettingsFragmentHandler(this);
 
             UR880Entrance.getInstance().addOnFactorySettingListener(mFactorySettingListener);
+
+            setDeviceID(((HomeActivity) getActivity()).getDeviceID());
+
             mView = mBinding.getRoot();
         } else {
             ViewGroup parent = (ViewGroup) mView.getParent();
@@ -411,8 +414,11 @@ public class LabelSettingsFragment extends Fragment implements View.OnClickListe
     };
 
     public void setDeviceID(String deviceID){
-        if (mBinding != null) {
-            mBinding.labelSettingIdTv.setText("设备编号：" + deviceID);
+        if (deviceID != null) {
+            mDeviceID = deviceID;
+            if (mBinding != null) {
+                mBinding.labelSettingIdTv.setText("设备编号：" + deviceID);
+            }
         }
     }
 }

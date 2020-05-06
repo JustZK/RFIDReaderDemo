@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import com.zk.common.utils.AppVersionUtil;
 import com.zk.rfid.ur880.UR880Entrance;
 import com.zk.rfidreaderdemo.R;
 import com.zk.rfidreaderdemo.adapter.FragmentAdapter;
@@ -39,6 +40,8 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivityHomeBinding = DataBindingUtil.setContentView(this, R.layout.activity_home);
+
+        mActivityHomeBinding.honeTitleTv.setText("RFID Reader Demo V" + AppVersionUtil.INSTANCE.appVersionNameForShow(this));
 
         initView();
 
@@ -80,9 +83,9 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-//    public String getDeviceID() {
-//        return mDeviceID;
-//    }
+    public String getDeviceID() {
+        return mDeviceID;
+    }
 
     public void setDeviceID(String deviceID) {
         mDeviceID = deviceID;
