@@ -37,9 +37,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mActivityMainBinding.setOnClickListener(this);
         mActivityMainBinding.mainTitleTv.setText("RFID Reader Demo V" + AppVersionUtil.INSTANCE.appVersionNameForShow(this));
 
-        LogUtil.Companion.getInstance().setLogSwitch(true);
+        LogUtil.Companion.getInstance().setLogSwitch(false);
         LogUtil.Companion.getInstance().init(this);
-        LogUtil.Companion.getInstance().d("Main onCreate");
+        LogUtil.Companion.getInstance().d("初始化", "Main onCreate", true);
         initView();
     }
 
