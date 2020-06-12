@@ -307,8 +307,8 @@ public class LabelSettingsFragment extends Fragment implements View.OnClickListe
                                 lightNumbers.clear();
                                 String lightNumbersTv = "";
                                 for (int lightNumberChecked = 0; lightNumberChecked <
-                                        lightNumberCheckedItems.length; lightNumberChecked++){
-                                    if (lightNumberCheckedItems[lightNumberChecked]){
+                                        lightNumberCheckedItems.length; lightNumberChecked++) {
+                                    if (lightNumberCheckedItems[lightNumberChecked]) {
                                         lightNumbers.add(lightNumberChecked + 1);
 
                                         if (lightNumbersTv.equals("")) {
@@ -331,14 +331,14 @@ public class LabelSettingsFragment extends Fragment implements View.OnClickListe
                         .show();
                 break;
             case R.id.label_settings_open_light_btn:
-                if (lightNumbers.size() > 0){
-                    UR880Entrance.getInstance().send(
-                            new UR880SendInfo.Builder().
-                                    turnOnLight(mDeviceID, (mBinding.labelSettingsLightLayerSp.getSelectedItemPosition() + 1),
-                                            lightNumbers).build());
-                } else {
-                    Toast.makeText(getContext(), "请选择灯号!", Toast.LENGTH_SHORT).show();
-                }
+//                if (lightNumbers.size() > 0){
+                UR880Entrance.getInstance().send(
+                        new UR880SendInfo.Builder().
+                                turnOnLight(mDeviceID, (mBinding.labelSettingsLightLayerSp.getSelectedItemPosition() + 1),
+                                        lightNumbers).build());
+//                } else {
+//                    Toast.makeText(getContext(), "请选择灯号!", Toast.LENGTH_SHORT).show();
+//                }
                 break;
         }
     }
@@ -477,7 +477,7 @@ public class LabelSettingsFragment extends Fragment implements View.OnClickListe
         }
     };
 
-    public void setDeviceID(String deviceID){
+    public void setDeviceID(String deviceID) {
         if (deviceID != null) {
             mDeviceID = deviceID;
             if (mBinding != null) {
