@@ -105,4 +105,54 @@
         <item>NO 2</item>
     </string-array>
 
+    <string-array name="light_Layer_array">
+        <item>1层</item>
+        <item>2层</item>
+        <item>3层</item>
+        <item>4层</item>
+        <item>5层</item>
+        <item>6层</item>
+        <item>7层</item>
+        <item>8层</item>
+        <item>9层</item>
+        <item>10层</item>
+        <item>11层</item>
+        <item>12层</item>
+    </string-array>
+
+    <string-array name="light_number_array">
+        <item>1号灯</item>
+        <item>2号灯</item>
+        <item>3号灯</item>
+        <item>4号灯</item>
+        <item>5号灯</item>
+        <item>6号灯</item>
+        <item>7号灯</item>
+        <item>8号灯</item>
+        <item>9号灯</item>
+        <item>10号灯</item>
+        <item>11号灯</item>
+        <item>12号灯</item>
+        <item>13号灯</item>
+        <item>14号灯</item>
+        <item>15号灯</item>
+        <item>16号灯</item>
+        <item>17号灯</item>
+        <item>18号灯</item>
+        <item>19号灯</item>
+        <item>20号灯</item>
+        <item>21号灯</item>
+        <item>22号灯</item>
+        <item>23号灯</item>
+        <item>24号灯</item>
+        <item>25号灯</item>
+        <item>26号灯</item>
+        <item>27号灯</item>
+        <item>28号灯</item>
+        <item>29号灯</item>
+        <item>30号灯</item>
+        <item>31号灯</item>
+        <item>32号灯</item>
+    </string-array>
+
 </resources>

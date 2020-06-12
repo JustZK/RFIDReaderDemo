@@ -1,6 +1,7 @@
 package com.zk.rfidreaderdemo.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,18 +11,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.zk.common.utils.LogUtil;
+import com.zk.rfid.bean.DeviceInformation;
 import com.zk.rfid.bean.UR880SendInfo;
 import com.zk.rfid.callback.FactorySettingListener;
 import com.zk.rfid.ur880.UR880Entrance;
 import com.zk.rfidreaderdemo.R;
 import com.zk.rfidreaderdemo.activity.HomeActivity;
+import com.zk.rfidreaderdemo.activity.MainActivity;
 import com.zk.rfidreaderdemo.databinding.FragmentLabelSettingsBinding;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+
+import android_serialport_api.SerialPortFinder;
 
 public class LabelSettingsFragment extends Fragment implements View.OnClickListener {
     private final static int SET_ANTENNA_CONFIGURATION = 0x01;
@@ -33,6 +40,10 @@ public class LabelSettingsFragment extends Fragment implements View.OnClickListe
     private final static int GET_BUZZER_STATUS_SETTING = 0x07;
     private final static int TIME_SYNCHRONIZATION = 0x08;
     private final static int DEVICE_RESTART = 0x09;
+
+    private String[] lightNumberItems;
+    private boolean[] lightNumberCheckedItems;
+    private ArrayList<Integer> lightNumbers = new ArrayList<>();
 
     private String mDeviceID = null;
 
@@ -275,6 +286,59 @@ public class LabelSettingsFragment extends Fragment implements View.OnClickListe
                 UR880Entrance.getInstance().send(
                         new UR880SendInfo.Builder().
                                 deviceRestart(mDeviceID).build());
+                break;
+            case R.id.label_settings_light_numbers_tv:
+                if (lightNumberItems == null) {
+                    lightNumberItems = getResources().getStringArray(R.array.light_number_array);
+
+                    lightNumberCheckedItems = new boolean[lightNumberItems.length];
+                }
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("选择开启的灯号（一个不选即关闭全部）")
+                        .setMultiChoiceItems(lightNumberItems, lightNumberCheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i, boolean b) {
+                                lightNumberCheckedItems[i] = b;
+                            }
+                        })
+                        .setPositiveButton(getString(R.string.sure), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                lightNumbers.clear();
+                                String lightNumbersTv = "";
+                                for (int lightNumberChecked = 0; lightNumberChecked <
+                                        lightNumberCheckedItems.length; lightNumberChecked++){
+                                    if (lightNumberCheckedItems[lightNumberChecked]){
+                                        lightNumbers.add(lightNumberChecked + 1);
+
+                                        if (lightNumbersTv.equals("")) {
+                                            lightNumbersTv = (lightNumberChecked + 1) + "";
+                                        } else {
+                                            lightNumbersTv = lightNumbersTv + "，" + (lightNumberChecked + 1);
+                                        }
+                                    }
+                                }
+                                if (lightNumbers.size() > 0) {
+                                    lightNumbersTv = lightNumbersTv + "号灯，开启。";
+                                } else {
+                                    lightNumbersTv = "全部关闭。";
+                                }
+                                mBinding.labelSettingsLightNumbersTv.setText(lightNumbersTv);
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.cancel), null)
+                        .show();
+                break;
+            case R.id.label_settings_open_light_btn:
+                if (lightNumbers.size() > 0){
+                    UR880Entrance.getInstance().send(
+                            new UR880SendInfo.Builder().
+                                    turnOnLight(mDeviceID, (mBinding.labelSettingsLightLayerSp.getSelectedItemPosition() + 1),
+                                            lightNumbers).build());
+                } else {
+                    Toast.makeText(getContext(), "请选择灯号!", Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
     }
