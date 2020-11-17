@@ -1,14 +1,19 @@
 package com.zk.rfidreaderdemo.activity;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
 
 import com.zk.common.utils.AppVersionUtil;
@@ -30,6 +35,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean[] serialPathCheckedItems;
     private List<DeviceInformation> mDeviceInformationList;
 
+    //读写权限
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    //请求状态码
+    private static int REQUEST_PERMISSION_CODE = 1;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +50,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mActivityMainBinding.setOnClickListener(this);
         mActivityMainBinding.mainTitleTv.setText("RFID Reader Demo V" + AppVersionUtil.INSTANCE.appVersionNameForShow(this));
 
-        LogUtil.Companion.getInstance().setLogSwitch(false);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, PERMISSIONS_STORAGE, REQUEST_PERMISSION_CODE);
+            }
+        }
+
+
+        LogUtil.Companion.getInstance().setLogSwitch(true);
         LogUtil.Companion.getInstance().init(this);
         LogUtil.Companion.getInstance().d("初始化", "Main onCreate", true);
         initView();
@@ -48,6 +68,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mActivityMainBinding.mainSerialPathLl.setVisibility(View.GONE);
         mActivityMainBinding.mainSerialBaudRateLl.setVisibility(View.GONE);
     }
+
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        if (requestCode == REQUEST_PERMISSION_CODE) {
+//            for (int i = 0; i < permissions.length; i++) {
+//                Log.i("MainActivity", "申请的权限为：" + permissions[i] + ",申请结果：" + grantResults[i]);
+//            }
+//        }
+//
+//    }
 
     @Override
     public void onClick(View view) {
