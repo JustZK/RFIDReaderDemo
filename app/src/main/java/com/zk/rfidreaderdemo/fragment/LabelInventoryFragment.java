@@ -43,6 +43,11 @@ public class LabelInventoryFragment extends Fragment implements View.OnClickList
 
     private LabelInventoryFragmentHandler mHandler;
 
+    private int mFastId = 0;
+    private int mInventoryType = 0;
+    private int mAntennaNumber = 0;
+    private int mAntennaNumberPosition = 0;
+
     private void handleMessage(Message msg) {
         switch (msg.what) {
             case START:
@@ -50,6 +55,12 @@ public class LabelInventoryFragment extends Fragment implements View.OnClickList
                 break;
             case END:
                 Toast.makeText(getContext(), "盘点结束！", Toast.LENGTH_SHORT).show();
+                if (mInventoryType == 2) {
+                    mAntennaNumberPosition++;
+                    if (mAntennaNumberPosition <= mAntennaNumber) {
+                        UR880Entrance.getInstance().send(new UR880SendInfo.Builder().inventory(mDeviceID, mFastId, mAntennaNumberPosition, 0).build());
+                    }
+                }
                 break;
             case CANCEL:
                 Toast.makeText(getContext(), "停止盘点！", Toast.LENGTH_SHORT).show();
@@ -174,10 +185,15 @@ public class LabelInventoryFragment extends Fragment implements View.OnClickList
             case R.id.label_inventory_start_btn:
                 mLabelInfoList.clear();
                 mBinding.labelInventoryNumberTv.setText("当前盘到的标签数量：" + mLabelInfoList.size());
-                int fastId = mBinding.labelInventoryFastIdSp.getSelectedItemPosition();
-                int antennaNumber = mBinding.labelInventoryAntennaNumberSp.getSelectedItemPosition();
-                int inventoryType = mBinding.labelInventoryInventoryModeSp.getSelectedItemPosition();
-                UR880Entrance.getInstance().send(new UR880SendInfo.Builder().inventory(mDeviceID, fastId, antennaNumber, inventoryType).build());
+                mFastId = mBinding.labelInventoryFastIdSp.getSelectedItemPosition();
+                mAntennaNumber = mBinding.labelInventoryAntennaNumberSp.getSelectedItemPosition();
+                mInventoryType = mBinding.labelInventoryInventoryModeSp.getSelectedItemPosition();
+                mAntennaNumberPosition = 0;
+                if (mInventoryType == 2) {
+                    UR880Entrance.getInstance().send(new UR880SendInfo.Builder().inventory(mDeviceID, mFastId, mAntennaNumberPosition, 0).build());
+                } else {
+                    UR880Entrance.getInstance().send(new UR880SendInfo.Builder().inventory(mDeviceID, mFastId, mAntennaNumber, mInventoryType).build());
+                }
                 break;
             case R.id.label_inventory_stop_btn:
                 UR880Entrance.getInstance().send(new UR880SendInfo.Builder().cancel(mDeviceID).build());
